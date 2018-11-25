@@ -8,6 +8,7 @@ static int window;
 static int menu_id;
 static int value = 0;
 
+
 struct point
 {
 	float x;
@@ -45,6 +46,7 @@ point bezier( const float t)
 	
 }
 
+// callback func of glutDisplayFunc
 void Display()
 {
 	glClearColor(1.0, 1.0, 1.0, 0.0);
@@ -102,12 +104,14 @@ void Display()
 }
 
 
-
+// For adding the control points
 void addControlPoint(int x, int y) {
 	control_point[number_cp].x = x; control_point[number_cp].y = y;
 	number_cp++;
 }
 
+
+// For deleting the control points 
 void deleteControlPoint(int x, int y) {
 	for (int i = 0; i < number_cp; i++) {
 		if (abs(x - control_point[i].x) < 10 && abs(control_point[i].y - y) < 10) {
@@ -122,7 +126,7 @@ void deleteControlPoint(int x, int y) {
 }
 
 
-
+// Callback func of glutMouseFunc
 void mouse(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -149,6 +153,7 @@ void mouse(int button, int state, int x, int y)
 	glutPostRedisplay();
 }
 
+// callback func of glutMotionFunc
 void toMove(int x, int y) {
 	if (moveControlPointState) {
 		printf("Kuch ho rha hai \n");
@@ -171,6 +176,8 @@ void menu(int num) {
 	}
 	glutPostRedisplay();
 }
+
+// For creating menu when pressed right click
 void createMenu(void) {
 	
 	menu_id = glutCreateMenu(menu);
@@ -181,6 +188,7 @@ void createMenu(void) {
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
+// For reshaping the window size 
 void reshape(int width, int height) {
 
 	/* define the viewport transformation */
@@ -188,6 +196,7 @@ void reshape(int width, int height) {
 
 }
 
+// When pressed ESC key , window closes
 void processNormalKeys(unsigned char key, int xx, int yy) {
 	if (key == 27)
 		exit(0);
