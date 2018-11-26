@@ -1,4 +1,4 @@
-#include <gl/glut.h>
+#include <GL/glut.h>
 # include <iostream>
 # include <stack>
 
@@ -156,7 +156,7 @@ void mouse(int button, int state, int x, int y)
 // callback func of glutMotionFunc
 void toMove(int x, int y) {
 	if (moveControlPointState) {
-		printf("Kuch ho rha hai \n");
+		// printf("Kuch ho rha hai \n");
 		
 		// addControlPoint(x, y);
 		// deleteControlPoint(old_x, old_y);
@@ -189,9 +189,9 @@ void menu(int num) {
 void createMenu(void) {
 	
 	menu_id = glutCreateMenu(menu);
-	glutAddMenuEntry("Add the point", 3);
-	glutAddMenuEntry("Delte the point", 1);
-	glutAddMenuEntry("Move the point", 2 );
+	glutAddMenuEntry("Add a point", 3);
+	glutAddMenuEntry("Delete a point", 1);
+	glutAddMenuEntry("Move a point", 2 );
 	glutAddMenuEntry("Quit", 0);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
