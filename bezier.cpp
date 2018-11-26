@@ -156,7 +156,7 @@ void mouse(int button, int state, int x, int y)
 // callback func of glutMotionFunc
 void toMove(int x, int y) {
 	if (moveControlPointState) {
-		printf("Kuch ho rha hai \n");
+		// printf("Kuch ho rha hai \n");
 		
 		addControlPoint(x, y);
 		deleteControlPoint(old_x, old_y);
