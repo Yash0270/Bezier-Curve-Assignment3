@@ -19,31 +19,31 @@ point control_point[100];
 point temp_array[100];
 int number_cp = 0;
 int moveControlPointState = 0;
-int old_x = 0; 
+int old_x = 0;
 int old_y = 0;
 
 
 
 
 // evaluate a point on a bezier-curve. t goes from 0 to 1.0
-point bezier( const float t)
-{	
-	
+point bezier(const float t)
+{
+
 	for (int i = 0; i < number_cp; i++) {
 		temp_array[i] = control_point[i];
 	}
 
 	for (int k = 1; k < number_cp; k++) {
 		for (int i = 0; i < number_cp - k; i++) {
-			temp_array[i].x = (1 - t)* temp_array[i].x + t * temp_array[i + 1].x ;
-			temp_array[i].y = (1 - t)* temp_array[i].y + t * temp_array[i + 1].y ;
+			temp_array[i].x = (1 - t)* temp_array[i].x + t * temp_array[i + 1].x;
+			temp_array[i].y = (1 - t)* temp_array[i].y + t * temp_array[i + 1].y;
 		}
 	}
 
 	return temp_array[0];
 
 
-	
+
 }
 
 // callback func of glutDisplayFunc
@@ -67,24 +67,24 @@ void Display()
 	//point d = { 260, 100 };
 
 	for (int i = 0; i < 1000; ++i)
-	{	
+	{
 		if (number_cp < 1)
 			break;
 
 		point p;
 		float t = static_cast<float>(i) / 999.0;
 		p = bezier(t);
-	
+
 
 		glPointSize(1.0f);
 		glBegin(GL_POINTS);
-		
+
 		int x = p.x;
 		int y = p.y;
 
 		glColor3f(0, 1, 0);
 		glVertex2i(x, h - y);
-		
+
 		glEnd();
 	}
 
@@ -125,7 +125,7 @@ void deleteControlPoint(int x, int y) {
 	}
 }
 
-
+int tempState = -1;
 // Callback func of glutMouseFunc
 void mouse(int button, int state, int x, int y)
 {
@@ -138,40 +138,55 @@ void mouse(int button, int state, int x, int y)
 			deleteControlPoint(x, y);
 		}
 		else if (value == 2) {
-			
+
 			old_x = x;
 			old_y = y;
 			moveControlPointState = state == GLUT_DOWN;
 		}
 	}
 
-	/*if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-		moveControlPointState = ~moveControlPointState;
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+		/*moveControlPointState = ~moveControlPointState;*/
+		for (int i = 0; i < number_cp; i++) {
+			if (abs(old_x - control_point[i].x) < 10 && abs(control_point[i].y - old_y) < 10) {
+				control_point[i].x = x;
+				control_point[i].y = y;
+				printf("Kuch ho rha hai \n");
+				break;
+			}
+		}
+		
+
 	}
-*/
-	
+
+
 	glutPostRedisplay();
 }
 
 // callback func of glutMotionFunc
 void toMove(int x, int y) {
-	if (moveControlPointState) {
-		// printf("Kuch ho rha hai \n");
-		
-		// addControlPoint(x, y);
-		// deleteControlPoint(old_x, old_y);
+	//if (moveControlPointState) {
+	//	
 
-		for (int i = 0; i < number_cp; i++) {
-			if (abs(x - control_point[i].x) < 10 && abs(control_point[i].y - y) < 10) {
-				control_point[i].x = x ; 
-				control_point[i].y = y ;
-			}
-		}
+	//	// addControlPoint(x, y);
+	//	// deleteControlPoint(old_x, old_y);
 
-	}
+	//	for (int i = 0; i < number_cp; i++) {
+	//		if (abs(x - control_point[i].x) < 10 && abs(control_point[i].y - y) < 10) {
+	//			control_point[i].x = x;
+	//			control_point[i].y = y;
+	//			printf("Kuch ho rha hai \n");
+	//			break;
+	//		}
+	//	}
 
-	old_x = x; 
-	old_y = y;
+	//	
+
+	//}
+	printf("%d %d\n", x, y);
+
+	//old_x = x;
+	//old_y = y;
 }
 
 void menu(int num) {
@@ -187,11 +202,11 @@ void menu(int num) {
 
 // For creating menu when pressed right click
 void createMenu(void) {
-	
+
 	menu_id = glutCreateMenu(menu);
 	glutAddMenuEntry("Add a point", 3);
 	glutAddMenuEntry("Delete a point", 1);
-	glutAddMenuEntry("Move a point", 2 );
+	glutAddMenuEntry("Move a point", 2);
 	glutAddMenuEntry("Quit", 0);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -215,7 +230,7 @@ int main(int argc, char *argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(1200, 800);
-	window = glutCreateWindow("Beizer Curve"); 
+	window = glutCreateWindow("Beizer Curve");
 
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(processNormalKeys);
