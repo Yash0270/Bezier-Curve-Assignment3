@@ -19,31 +19,33 @@ point control_point[100];
 point temp_array[100];
 int number_cp = 0;
 int moveControlPointState = 0;
-int old_x = 0; 
+int old_x = 0;
 int old_y = 0;
 
 
 
 
 // evaluate a point on a bezier-curve. t goes from 0 to 1.0
-point bezier( const float t)
-{	
-	
+// @param t 	 : at which t ranging from 0 - 1 , we need to find the point 
+// @return point : returning the calculated the point thorugh de castelau algorithm
+point bezier(const float t)
+{
+
 	for (int i = 0; i < number_cp; i++) {
 		temp_array[i] = control_point[i];
 	}
 
 	for (int k = 1; k < number_cp; k++) {
 		for (int i = 0; i < number_cp - k; i++) {
-			temp_array[i].x = (1 - t)* temp_array[i].x + t * temp_array[i + 1].x ;
-			temp_array[i].y = (1 - t)* temp_array[i].y + t * temp_array[i + 1].y ;
+			temp_array[i].x = (1 - t)* temp_array[i].x + t * temp_array[i + 1].x;
+			temp_array[i].y = (1 - t)* temp_array[i].y + t * temp_array[i + 1].y;
 		}
 	}
 
 	return temp_array[0];
 
 
-	
+
 }
 
 // callback func of glutDisplayFunc
@@ -61,30 +63,26 @@ void Display()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	//point a = { 40, 100 };
-	//point b = { 80, 20 };
-	//point c = { 150, 180 };
-	//point d = { 260, 100 };
 
 	for (int i = 0; i < 1000; ++i)
-	{	
+	{
 		if (number_cp < 1)
 			break;
 
 		point p;
 		float t = static_cast<float>(i) / 999.0;
 		p = bezier(t);
-	
+
 
 		glPointSize(1.5f);
 		glBegin(GL_POINTS);
-		
+
 		int x = p.x;
 		int y = p.y;
 
 		glColor3f(0, 0.5, 0);
 		glVertex2i(x, h - y);
-		
+
 		glEnd();
 	}
 
@@ -105,6 +103,8 @@ void Display()
 
 
 // For adding the control points
+// @param x : representing the x  coordinate to add the control point 
+// @param y : representing the y coordinate to add the control point 
 void addControlPoint(int x, int y) {
 	control_point[number_cp].x = x; control_point[number_cp].y = y;
 	number_cp++;
@@ -112,6 +112,8 @@ void addControlPoint(int x, int y) {
 
 
 // For deleting the control points 
+// @param x : representing the x coordinate to delete the control point 
+// @param y : representing the y coordinate to delete the control point 
 void deleteControlPoint(int x, int y) {
 	for (int i = 0; i < number_cp; i++) {
 		if (abs(x - control_point[i].x) < 10 && abs(control_point[i].y - y) < 10) {
@@ -127,6 +129,10 @@ void deleteControlPoint(int x, int y) {
 
 
 // Callback func of glutMouseFunc
+// @param button : represeting  which buton pressed, the left , right or middle 
+// @param state : pressed or not pressed
+// @param x : representing the x  coordinate of mouse 
+// @param y : representing the y coordinate of mouse 
 void mouse(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -138,42 +144,33 @@ void mouse(int button, int state, int x, int y)
 			deleteControlPoint(x, y);
 		}
 		else if (value == 2) {
-			
+
 			old_x = x;
 			old_y = y;
-			moveControlPointState = state == GLUT_DOWN;
+			
 		}
 	}
 
-	/*if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-		moveControlPointState = ~moveControlPointState;
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+		
+		for (int i = 0; i < number_cp; i++) {
+			if (abs(old_x - control_point[i].x) < 10 && abs(control_point[i].y - old_y) < 10) {
+				control_point[i].x = x;
+				control_point[i].y = y;
+				printf("Kuch ho rha hai \n");
+				break;
+			}
+		}
+		
+
 	}
-*/
-	
+
+
 	glutPostRedisplay();
 }
 
-// callback func of glutMotionFunc
-void toMove(int x, int y) {
-	if (moveControlPointState) {
-		// printf("Kuch ho rha hai \n");
-		
-		// addControlPoint(x, y);
-		// deleteControlPoint(old_x, old_y);
-
-		for (int i = 0; i < number_cp; i++) {
-			if (abs(x - control_point[i].x) < 10 && abs(control_point[i].y - y) < 10) {
-				control_point[i].x = x ; 
-				control_point[i].y = y ;
-			}
-		}
-
-	}
-
-	old_x = x; 
-	old_y = y;
-}
-
+// callback func for glutCreateMenu 
+// @param num : represting the menu entry number
 void menu(int num) {
 	if (num == 0) {
 		glutDestroyWindow(window);
@@ -187,24 +184,29 @@ void menu(int num) {
 
 // For creating menu when pressed right click
 void createMenu(void) {
-	
+
 	menu_id = glutCreateMenu(menu);
 	glutAddMenuEntry("Add a point", 3);
 	glutAddMenuEntry("Delete a point", 1);
-	glutAddMenuEntry("Move a point", 2 );
+	glutAddMenuEntry("Move a point", 2);
 	glutAddMenuEntry("Quit", 0);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 // For reshaping the window size 
-void reshape(int width, int height) {
+// @param x : representing the width
+// @param y : representing the height
+void reshape(int x, int y) {
 
 	/* define the viewport transformation */
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, x, y);
 
 }
 
 // When pressed ESC key , window closes
+// @param key : the key pressed 
+// @param xx : representing the x  coordinate 
+// @param yy : representing the y coordinate  
 void processNormalKeys(unsigned char key, int xx, int yy) {
 	if (key == 27)
 		exit(0);
@@ -215,12 +217,12 @@ int main(int argc, char *argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(1200, 800);
+
 	window = glutCreateWindow("Bezier Curve"); 
 
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(processNormalKeys);
 	glutMouseFunc(mouse);
-	glutMotionFunc(toMove);
 	glutDisplayFunc(Display);
 	createMenu();
 
