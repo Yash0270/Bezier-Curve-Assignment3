@@ -1,4 +1,4 @@
-#include <gl/glut.h>
+#include <GL/glut.h>
 # include <iostream>
 # include <stack>
 
@@ -182,7 +182,7 @@ void createMenu(void) {
 	
 	menu_id = glutCreateMenu(menu);
 	glutAddMenuEntry("Add the point", 3);
-	glutAddMenuEntry("Delte the point", 1);
+	glutAddMenuEntry("Delete the point", 1);
 	glutAddMenuEntry("Move the point", 2 );
 	glutAddMenuEntry("Quit", 0);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
