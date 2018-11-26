@@ -158,8 +158,16 @@ void toMove(int x, int y) {
 	if (moveControlPointState) {
 		printf("Kuch ho rha hai \n");
 		
-		addControlPoint(x, y);
-		deleteControlPoint(old_x, old_y);
+		// addControlPoint(x, y);
+		// deleteControlPoint(old_x, old_y);
+
+		for (int i = 0; i < number_cp; i++) {
+			if (abs(x - control_point[i].x) < 10 && abs(control_point[i].y - y) < 10) {
+				control_point[i].x = x ; 
+				control_point[i].y = y ;
+			}
+		}
+
 	}
 
 	old_x = x; 
