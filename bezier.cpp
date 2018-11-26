@@ -26,6 +26,8 @@ int old_y = 0;
 
 
 // evaluate a point on a bezier-curve. t goes from 0 to 1.0
+// @param t 	 : at which t ranging from 0 - 1 , we need to find the point 
+// @return point : returning the calculated the point thorugh de castelau algorithm
 point bezier(const float t)
 {
 
@@ -101,6 +103,8 @@ void Display()
 
 
 // For adding the control points
+// @param x : representing the x  coordinate to add the control point 
+// @param y : representing the y coordinate to add the control point 
 void addControlPoint(int x, int y) {
 	control_point[number_cp].x = x; control_point[number_cp].y = y;
 	number_cp++;
@@ -108,6 +112,8 @@ void addControlPoint(int x, int y) {
 
 
 // For deleting the control points 
+// @param x : representing the x coordinate to delete the control point 
+// @param y : representing the y coordinate to delete the control point 
 void deleteControlPoint(int x, int y) {
 	for (int i = 0; i < number_cp; i++) {
 		if (abs(x - control_point[i].x) < 10 && abs(control_point[i].y - y) < 10) {
@@ -123,6 +129,10 @@ void deleteControlPoint(int x, int y) {
 
 
 // Callback func of glutMouseFunc
+// @param button : represeting  which buton pressed, the left , right or middle 
+// @param state : pressed or not pressed
+// @param x : representing the x  coordinate of mouse 
+// @param y : representing the y coordinate of mouse 
 void mouse(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -159,7 +169,8 @@ void mouse(int button, int state, int x, int y)
 	glutPostRedisplay();
 }
 
-
+// callback func for glutCreateMenu 
+// @param num : represting the menu entry number
 void menu(int num) {
 	if (num == 0) {
 		glutDestroyWindow(window);
@@ -183,14 +194,19 @@ void createMenu(void) {
 }
 
 // For reshaping the window size 
-void reshape(int width, int height) {
+// @param x : representing the width
+// @param y : representing the height
+void reshape(int x, int y) {
 
 	/* define the viewport transformation */
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, x, y);
 
 }
 
 // When pressed ESC key , window closes
+// @param key : the key pressed 
+// @param xx : representing the x  coordinate 
+// @param yy : representing the y coordinate  
 void processNormalKeys(unsigned char key, int xx, int yy) {
 	if (key == 27)
 		exit(0);
