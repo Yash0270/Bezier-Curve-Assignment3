@@ -181,9 +181,9 @@ void menu(int num) {
 void createMenu(void) {
 	
 	menu_id = glutCreateMenu(menu);
-	glutAddMenuEntry("Add the point", 3);
-	glutAddMenuEntry("Delete the point", 1);
-	glutAddMenuEntry("Move the point", 2 );
+	glutAddMenuEntry("Add a point", 3);
+	glutAddMenuEntry("Delete a point", 1);
+	glutAddMenuEntry("Move a point", 2 );
 	glutAddMenuEntry("Quit", 0);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
