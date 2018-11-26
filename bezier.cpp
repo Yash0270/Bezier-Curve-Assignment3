@@ -61,10 +61,6 @@ void Display()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	//point a = { 40, 100 };
-	//point b = { 80, 20 };
-	//point c = { 150, 180 };
-	//point d = { 260, 100 };
 
 	for (int i = 0; i < 1000; ++i)
 	{
@@ -125,7 +121,7 @@ void deleteControlPoint(int x, int y) {
 	}
 }
 
-int tempState = -1;
+
 // Callback func of glutMouseFunc
 void mouse(int button, int state, int x, int y)
 {
@@ -141,12 +137,12 @@ void mouse(int button, int state, int x, int y)
 
 			old_x = x;
 			old_y = y;
-			moveControlPointState = state == GLUT_DOWN;
+			
 		}
 	}
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-		/*moveControlPointState = ~moveControlPointState;*/
+		
 		for (int i = 0; i < number_cp; i++) {
 			if (abs(old_x - control_point[i].x) < 10 && abs(control_point[i].y - old_y) < 10) {
 				control_point[i].x = x;
@@ -163,31 +159,6 @@ void mouse(int button, int state, int x, int y)
 	glutPostRedisplay();
 }
 
-// callback func of glutMotionFunc
-void toMove(int x, int y) {
-	//if (moveControlPointState) {
-	//	
-
-	//	// addControlPoint(x, y);
-	//	// deleteControlPoint(old_x, old_y);
-
-	//	for (int i = 0; i < number_cp; i++) {
-	//		if (abs(x - control_point[i].x) < 10 && abs(control_point[i].y - y) < 10) {
-	//			control_point[i].x = x;
-	//			control_point[i].y = y;
-	//			printf("Kuch ho rha hai \n");
-	//			break;
-	//		}
-	//	}
-
-	//	
-
-	//}
-	printf("%d %d\n", x, y);
-
-	//old_x = x;
-	//old_y = y;
-}
 
 void menu(int num) {
 	if (num == 0) {
@@ -235,7 +206,6 @@ int main(int argc, char *argv[])
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(processNormalKeys);
 	glutMouseFunc(mouse);
-	glutMotionFunc(toMove);
 	glutDisplayFunc(Display);
 	createMenu();
 
