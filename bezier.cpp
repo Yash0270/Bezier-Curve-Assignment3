@@ -76,19 +76,19 @@ void Display()
 		p = bezier(t);
 	
 
-		glPointSize(1.0f);
+		glPointSize(1.5f);
 		glBegin(GL_POINTS);
 		
 		int x = p.x;
 		int y = p.y;
 
-		glColor3f(0, 1, 0);
+		glColor3f(0, 0.5, 0);
 		glVertex2i(x, h - y);
 		
 		glEnd();
 	}
 
-	glPointSize(5.0f);
+	glPointSize(6.0f);
 	glBegin(GL_POINTS);
 	for (int i = 0; i < number_cp; i++)
 	{
@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(1200, 800);
-	window = glutCreateWindow("Beizer Curve"); 
+	window = glutCreateWindow("Bezier Curve"); 
 
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(processNormalKeys);
